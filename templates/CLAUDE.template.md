@@ -43,6 +43,8 @@ A task is ready to hand over when it states: **objective, scope (which files), c
 Full text + rationale (canonical — do **not** vendor a copy):
 https://raw.githubusercontent.com/dominik117/agentic-constitution/main/CONSTITUTION.md
 
+> The entries below are reminders, not the rule. The linked article governs — read its full text (Principle / Implications / Necessary nuance / Test) before enforcing; never act on the one-liner alone.
+
 {{CONSTITUTION_ENFORCE_LIST}}
 
 ## Operational context
