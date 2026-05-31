@@ -56,6 +56,8 @@ https://raw.githubusercontent.com/dominik117/agentic-constitution/main/CONSTITUT
 3. Never paste secrets in commands — use `$VAR`.
 4. Update the session progress doc at session end — append a new "Session N" entry, don't edit in place.
 5. Never delete content from Dominik's canonical docs without approval — reorganize/move, never silently drop. Show ADDED / UPDATED / REMOVED; say "Nothing removed" when true.
+6. **Debugging / diagnosis:** check what you already know first (context, memory, logs) — the cause is often already there. Rank hypotheses by how common they are and test the cheapest / most-likely first. Never send the user to act (call support, change a setting, move money) on an unverified guess; state your confidence. (Constitution Art. 12.)
+7. **After a caught mistake:** don't promise "it won't happen again" — that's empty for an LLM. Propose the durable fix: a rule, a check, or a test, recorded in `design-notes.md`. Lessons become artifacts. (Constitution Art. 14.)
 
 ## Layout
 {{LAYOUT}}
