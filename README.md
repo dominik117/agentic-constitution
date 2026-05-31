@@ -1,6 +1,6 @@
 # agentic-constitution
 
-Canonical, cross-system **agentic design charter** for Dominik Bacher's projects. `CONSTITUTION.md` here is the single source of truth (Article 11): every project references it instead of vendoring a copy, so the doctrine cannot drift between repos.
+Canonical, cross-system **agentic design charter** for Dominik Bacher's projects. `CONSTITUTION.md` here is the single source of truth (*Build it like a professional* — one source of truth per fact): every project references it instead of vendoring a copy, so the doctrine cannot drift between repos.
 
 ## Consumption pattern
 
