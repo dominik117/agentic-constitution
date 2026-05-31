@@ -97,9 +97,24 @@ Implementation knobs are settings *within* an architecture: how many prompts to 
 
 ---
 
+## Article 5 — Least privilege. Don't hand an autonomous agent the keys to the kingdom.
+
+**Principle.** An autonomous agent should hold the narrowest access that lets it do its job, and no broad standing grant should be given for momentary convenience. Every permission an agent holds is one that can be misused — by a bug, a bad instruction, a compromised dependency, or the agent's own error. Convenience is not a reason to widen the blast radius.
+
+**Implications.**
+1. Prefer the scoped mechanism over the broad one even when the broad one is faster to set up: a read-only deploy key over an account-wide token; a Tailnet-only bind over `0.0.0.0`; a per-task user LaunchAgent over a system-wide grant; one repo over org access.
+2. Never grant an autonomous agent a broad standing permission for a one-time need. If a task seems to need Full Disk Access, root, or "administer this computer," find the path that doesn't — a narrower mechanism usually exists (user LaunchAgents instead of cron).
+3. The grant outlives the task. A permission given "just to get this working" stays granted long after, and the agent keeps it across every future session. Standing access is the default-dangerous case.
+4. Generate and confine credentials at the narrowest scope: a key created on the machine that uses it and never copied off; a secret one service reads, not a shared god-credential.
+
+**Necessary nuance.** Least privilege is not no privilege — an agent blocked from its job is useless, and security theatre that forces constant manual intervention defeats the point. The test is whether a *narrower* mechanism would do the same job. If yes, use it. If the only options are "broad grant" or "can't do the task," that is a real trade-off to weigh consciously, not a reflex to grant.
+
+**The test:** before granting, ask "is this the narrowest access that does the job, and would I be comfortable with the agent holding it indefinitely?" If a scoped alternative exists, the broad grant is wrong.
+
+---
+
 The following are placeholders for principles I expect to articulate over the coming months. Don't write them now; let the actual design experience surface what they should say.
 
-- **Article 5 — Human-in-the-loop where money or commitment is at stake.** No autonomous trades, no autonomous emails to people I care about, no autonomous calendar invites to others.
 - **Article 6 — Privacy tiering.** Some prompts must stay local; some can route to cloud. The routing decision itself is one of the most important things the Mediator does.
 - **Article 7 — Cost discipline.** Every agent should be aware of its token/compute budget. Runaway agents are forbidden by design.
 - **Article 8 — One agent, one job.** Agents are specialists. Don't build an agent that does five things; build five agents that each do one.
@@ -127,7 +142,7 @@ The following are placeholders for principles I expect to articulate over the co
 5. **Lint and format are automated, not argued** (`ruff`). Clean before commit.
 6. **Test the happy path and the failure path before push.** Never ship an untested billable or destructive leg.
 7. **Type hints and docstrings where they earn their keep** — a signature is documentation.
-8. **No secrets in code or history** — credentials live in gitignored config, referenced by name.
+8. **No secrets in code, history, or logs** — credentials live in gitignored config, referenced by name, and are never written to disk or logged by *any* code, including throwaway test harnesses and debug scripts. Route secret-bearing calls through the one helper that suppresses their logging; never hand a raw URL or token to a client that may log it. (A bot token once leaked to `/tmp` twice via a test harness that POSTed with a raw HTTP client instead of the production sender.)
 9. **Docs track reality.** When behavior changes, the doc describing it changes in the same commit. Stale docs are bugs.
 
 **The test:** before committing, ask "would this pass a senior peer's review without an apology?" If you'd have to say "ignore that file" or "I'll clean it up later" — clean it up now. Later never comes, and the debt compounds.
@@ -158,6 +173,7 @@ The engineer: think in trade-offs not absolutes, enumerate failure modes before 
 1. Checkable present-day facts get checked, not guessed: package versions, model and tag names, pricing, API parameters, config keys, current role-holders, file contents.
 2. Cost asymmetry: a search or a one-line command is cheap and up front; a wrong assumption propagates into code, docs, and decisions and is expensive to unwind. One registry check would have prevented a fictional tag committed across five files and a wasted partial download.
 3. "Verify on the box / in the registry / in the docs" beats "it's probably called X."
+4. Installation is not execution. A job that is *installed* — a cron line present, a LaunchAgent loaded, a service "enabled" — is not a job that *runs*; and a command that works when you run it by hand is not one that fires on its real trigger, under the real scheduler's shell and environment. Verify at the trigger: confirm the scheduled run actually fired and wrote its expected effect, not just that the thing is listed.
 
 **Necessary nuance — scope to stakes (Article 1's spirit).** Timeless facts (math, settled history, language) don't need re-verification. Anything current-state, externally-defined, or version-dependent does. Don't burn a check on what is genuinely stable; do verify anything that could have drifted or that you're reconstructing rather than recalling.
 
@@ -190,3 +206,4 @@ _End of draft. Append new articles or refine existing ones as the system develop
 ## Revision history
 
 - 2026-05-31 — Added Article 14 (lessons become checked artifacts). Refined Article 12 with a Diagnosis subsection. Both anchored on the LLM_Reasoning_Failure case study.
+- 2026-05-31 — Added Article 5 (least privilege). Extended Article 13 with the install-is-not-execution implication. Extended Article 11's secrets convention to cover logs and test/throwaway code. Anchored on the mediator-burn-in dry-run session (FDA→launchd, Tailnet bind, read-only deploy key; the /tmp token leak).
