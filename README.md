@@ -12,6 +12,13 @@ https://raw.githubusercontent.com/dominik117/agentic-constitution/main/CONSTITUT
 
 Each repo keeps only a lean **enforce-list** — the handful of Articles that actually bind locally, one line each on how they apply in that project. Full text and the *why* stay here; the per-repo `CLAUDE.md` stays short.
 
+## Make the agent actually follow it
+
+Only `CLAUDE.md` is auto-loaded into the agent's context every session. The canonical URL is **not** auto-fetched — the agent reads it only if it decides to, which is rare. So the **enforce-list in `CLAUDE.md` is the layer that actually binds the agent**; the URL is rationale and onboarding, not the working copy. When authoring a repo's `CLAUDE.md`:
+
+1. **Make the enforce-list self-sufficient.** Every Article that binds locally gets an imperative one-liner + a one-line project application — enough to act on *without fetching anything*. The URL is for the *why*, the edge cases, and the Test.
+2. **Don't "fix forgetting" by vendoring.** Copying `CONSTITUTION.md` into the repo does **not** help — a file in the tree is no more auto-loaded than the URL; the agent still has to choose to open it. If you need adherence stronger than the enforce-list, **inject it at session start** (a Claude Code `SessionStart` hook that returns the doctrine as `additionalContext`), don't copy a file the agent won't read. Note the tradeoff: injected text costs context tokens on every session/resume/compact — inject a lean excerpt, not the whole charter.
+
 ## Starting a new repo
 
 Use [`templates/CLAUDE.template.md`](templates/CLAUDE.template.md) as the scaffold for any new repo's `CLAUDE.md`. Carry the reusable core (Owner, Communication, Working style, Definition of Ready/Done, universal Lessons) verbatim; fill the `{{PLACEHOLDER}}` tokens with project specifics.
