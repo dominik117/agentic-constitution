@@ -115,6 +115,8 @@ Implementation knobs are settings *within* an architecture: how many prompts to 
 
 **The test:** before granting, ask "is this the narrowest access that does the job, and would I be comfortable with the agent holding it indefinitely?" If a scoped alternative exists, the broad grant is wrong.
 
+**Operationalized** in the Security Checklist (§5 Authorization & Access Control, §21 AI/LLM/Agentic) — every permission an agent holds is one a prompt injection can use.
+
 ---
 
 The following are placeholders for principles I expect to articulate over the coming months. Don't write them now; let the actual design experience surface what they should say.
@@ -150,7 +152,19 @@ The following are placeholders for principles I expect to articulate over the co
 8. **No secrets in code, history, or logs** — credentials live in gitignored config, referenced by name, and are never written to disk or logged by *any* code, including throwaway test harnesses and debug scripts. Route secret-bearing calls through the one helper that suppresses their logging; never hand a raw URL or token to a client that may log it. (A bot token once leaked to `/tmp` twice via a test harness that POSTed with a raw HTTP client instead of the production sender.)
 9. **Docs track reality.** When behavior changes, the doc describing it changes in the same commit. Stale docs are bugs.
 
+**Companion — *Engineers, not vibe coders*.** These standards bind code an AI wrote exactly as they bind code a human wrote; delegating to a model never lowers the bar. The Security Checklist in this repo (`templates/SECURITY_CHECKLIST.md`) is the concrete security-and-quality gate behind conventions 6 and 8 — run it, don't vibe it.
+
 **The test:** before committing, ask "would this pass a senior peer's review without an apology?" If you'd have to say "ignore that file" or "I'll clean it up later" — clean it up now. Later never comes, and the debt compounds.
+
+---
+
+## Engineers, not vibe coders
+We are a computer engineer, software developer, and data scientist using AI to accelerate engineering — not to replace it. Vibe coding — accepting generated code without reading it, shipping without verification, designing by prompt-and-pray — is lazy work and an unacceptable risk. The discipline does not relax because an AI wrote the code:
+1. Every generated diff is read and understood before it merges. If we cannot explain it, it does not ship.
+2. Tests, review, version control, and documentation apply to AI output exactly as they apply to human output.
+3. Speed comes from delegation and parallelism, never from skipping verification.
+4. The human owns the architecture, the decisions, and the consequences. The AI owns the typing.
+5. Security and correctness gates (see the Security Checklist in this repo) are run, not vibed. "The model said it's fine" is not evidence.
 
 ---
 
@@ -220,3 +234,4 @@ _End of draft. Append new articles or refine existing ones as the system develop
 - 2026-05-31 — Dropped article numbers; articles are now identified by name. Cross-references rewritten to name the companion article instead of citing a number, so future inserts and reordering no longer require a renumbering pass.
 - 2026-05-31 — Added the "a name is a handle, not the rule" note to the preamble: a reference or enforce-list one-liner points at an article and never replaces it; the full article text governs. Guards against treating the (lossy) title as the principle now that articles are name-identified.
 - 2026-06-03 — Added implication "Read the source before you build on it — and re-check after" to the Verify article, after an assumed Ollama tag voided a burn-in run and memory-based model claims needed correction. Source-first verification, before and after building, is now explicit for external dependencies.
+- 2026-06-05 — Added the *Engineers, not vibe coders* article (engineering discipline applies to AI-generated code; five fixed commitments) after *Build it like a professional*, with a companion cross-reference from it and from *Least privilege*. Integrated the reusable Security Checklist at `templates/SECURITY_CHECKLIST.md` and referenced it from the README (the no-blank-box `[x]`/`[~]`/`[N/A]` convention). Nothing removed or weakened in existing articles.
