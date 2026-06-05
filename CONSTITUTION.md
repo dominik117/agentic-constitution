@@ -186,6 +186,10 @@ The engineer: think in trade-offs not absolutes, enumerate failure modes before 
 
 **Tooling — verification is one tool call away.** Claude Code has built-in WebSearch + WebFetch; the Claude API has the `web_search` tool. Checking the registry or the docs is cheap and available, so "verify" is operational, not aspirational. Operationalized for the build process in `CLAUDE.md`.
 
+**Read the source before you build on it — and re-check after.** Before integrating or configuring any external model, library, API, framework, or tool, read its authoritative documentation first — the README, model card, official docs, release notes, or changelog — and confirm the exact names, versions, tags, parameters, and constraints against it. Configure from the source, never from memory or assumption. After building, audit your own output against the same sources and correct any drift before presenting it. When the source cannot be checked, state that and flag the uncertainty instead of guessing. A name that "should exist" is not a name that exists until the registry or docs confirm it.
+
+*Anchor:* the `qwen3.6:27b` tag was assumed into the burn-in config and errored every comparison cell of a full run; separately, model-capability claims were stated from memory that a single read of the model card would have corrected. Both were thirty-second checks skipped.
+
 ---
 
 ## Lessons become checked artifacts, not promises.
@@ -215,3 +219,4 @@ _End of draft. Append new articles or refine existing ones as the system develop
 - 2026-05-31 — Restored *Human-in-the-loop where money or commitment is at stake* from its original placeholder slot, placed next to *Least privilege*.
 - 2026-05-31 — Dropped article numbers; articles are now identified by name. Cross-references rewritten to name the companion article instead of citing a number, so future inserts and reordering no longer require a renumbering pass.
 - 2026-05-31 — Added the "a name is a handle, not the rule" note to the preamble: a reference or enforce-list one-liner points at an article and never replaces it; the full article text governs. Guards against treating the (lossy) title as the principle now that articles are name-identified.
+- 2026-06-03 — Added implication "Read the source before you build on it — and re-check after" to the Verify article, after an assumed Ollama tag voided a burn-in run and memory-based model claims needed correction. Source-first verification, before and after building, is now explicit for external dependencies.

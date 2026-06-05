@@ -26,6 +26,7 @@ Dominik Bacher (`dominik117`). PO at Lufthansa Group Digital Hangar, Zurich; ex-
 3. Branch per feature; main stays green.
 4. Test locally before push; smoke-test the happy path.
 5. Before writing/editing any file: propose the approach, list risks, argue against yourself, wait for approval.
+6. Before adding or configuring any dependency, model, or tool: read its README/card/official docs and verify names, versions, and parameters against the source. After building: re-check your output against those sources and correct drift. Never configure from memory.
 
 (Toolchain conventions — language/runtime, package manager, linter — go in {{PROJECT_SPECIFIC_SECTIONS}}.)
 
