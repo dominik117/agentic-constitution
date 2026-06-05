@@ -25,6 +25,12 @@ Only `CLAUDE.md` is auto-loaded into the agent's context every session. The cano
 
 Use [`templates/CLAUDE.template.md`](templates/CLAUDE.template.md) as the scaffold for any new repo's `CLAUDE.md`. Carry the reusable core (Owner, Communication, Working style, Definition of Ready/Done, universal Lessons) verbatim; fill the `{{PLACEHOLDER}}` tokens with project specifics.
 
+## Security checklist
+
+Every project gets the same security review — weekend PoC or production — from one reusable baseline: [`templates/SECURITY_CHECKLIST.md`](templates/SECURITY_CHECKLIST.md). It's grounded in OWASP Top 10:2025, ASVS 5.0, NIST SSDF, SLSA, and the OWASP LLM/Agentic Top 10, and carries its own *when to run* guidance.
+
+**The convention: no box is ever left blank.** Each item ends in exactly one state — `[x]` done (with evidence: a link to code/config/commit), `[~]` partial (note what's missing and the follow-up), or `[N/A]` (with a one-line reason, e.g. "static site, no auth"). An unexamined item is a finding; "N/A because we thought about it" is success, silence is not.
+
 ## Design rationale
 
 - **Reference-by-URL, not vendoring.** Copying the charter into each repo reintroduces drift the moment it changes — you'd have to chase N copies. One canonical URL is zero-drift by construction: every consumer fetches the same bytes.
